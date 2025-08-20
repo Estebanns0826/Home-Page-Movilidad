@@ -1,15 +1,6 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Menú lateral izquierdo -->
-      <nav class="col-2 bg-light vh-50 d-flex flex-column p-3 border-end">
-        <h5 class="mb-4">Menú</h5>
-        <button class="btn btn-outline-primary mb-2 w-100">Laboratorio</button>
-        <button class="btn btn-outline-primary mb-2 w-100">Planeamiento</button>
-        <button class="btn btn-outline-primary mb-2 w-100">Tickets</button>
-        <button class="btn btn-outline-primary mb-2 w-100">Interconexión</button>
-      </nav>
-      
+  <div class="container py-5 bg-light">
+    <div class="row g-4 text-center">
       <div class="col-md-4">
         <div class="card h-100 shadow-sm border-0 hover-shadow transition">
           <img src="/imagenes/foto1.jpg" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Tickets">
@@ -29,18 +20,9 @@
     </div>
   </div>
   <News />
-
-
 </template>
 
 <script setup>
-// Aquí puedes añadir lógica de Vue/Nuxt si necesitas
+import '~/assets/login.css'
 </script>
-
-<style>
-/* Ajustes opcionales */
-body {
-  margin: 0;
-}
-</style>
 

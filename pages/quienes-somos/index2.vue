@@ -26,18 +26,8 @@
       </div>
 
       <!-- Enlaces adicionales -->
-       <div class="text-center mb-4">
-  <div class="d-flex flex-column align-items-center gap-2">
-    <img src="/imagenes/foto5.jpg" alt="Geonetwork" class="img-fluid mb-2" style="max-width: 150px;" />
-    <a href="#" class="text-primary text-decoration-none">Geonetwork (Metadatos)</a>
-  </div>
-</div>
-      <div class="text-center mb-4">
-        <div class="d-flex justify-content-center flex-wrap gap-3">
-          <a href="#" class="text-primary text-decoration-none">Geonetwork (Metadatos)</a>
-          
-        </div>
-      </div>
+
+
     </div>
 
     <!-- Pie de página institucional -->

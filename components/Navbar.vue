@@ -46,18 +46,7 @@
         </li>
 
         <!-- Servicios -->
-        <li class="nav-item dropdown px-2">
-
-
-          <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
-            Tableros (Locker Studio)
-          </a>
-
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Trámites y servicios</a></li>
-            <li><a class="dropdown-item" href="#">Líneas de atención</a></li>
-          </ul>
-        </li>
+        
         <li class="nav-item dropdown">
 
           <a href="http://38.50.50.166:9090/geoserver"
@@ -87,18 +76,7 @@
           </ul>
         </li>
         <!-- Participa -->
-        <li class="nav-item dropdown px-2">
-          <a class="nav-link dropdown-toggle text-dark"
-             href="https://www.cali.gov.co/participacion/publicaciones/166693/participa/" target="_blank" rel="noopener"
-             role="button" data-bs-toggle="dropdown">
-            Geonetwork
-          </a>
-
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Consejos y comités</a></li>
-            <li><a class="dropdown-item" href="#">Cabildos abiertos</a></li>
-          </ul>
-        </li>
+        
       </ul>
     </nav>
   </div>

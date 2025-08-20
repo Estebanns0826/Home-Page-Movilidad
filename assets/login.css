@@ -1,7 +1,6 @@
 /* Fondo con imagen y transparencia */
 body {
-    background: url('~/static/imagenes/cali.jpg') no-repeat center center fixed;
-    background-size: cover;
+
     position: relative;
     min-height: 100vh;
     margin: 0;
