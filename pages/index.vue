@@ -4,9 +4,9 @@
       <!-- Menú lateral izquierdo -->
       <nav class="col-2 bg-light vh-50 d-flex flex-column p-3 border-end">
         <h5 class="mb-4">Menú</h5>
-        <button class="btn btn-outline-primary mb-2 w-100">Laboratorio</button>
+        <a href="http://38.50.50.116:5000/login" class="btn btn-outline-primary mb-2 w-100">Laboratorio</a>
         <button class="btn btn-outline-primary mb-2 w-100">Planeamiento</button>
-        <button class="btn btn-outline-primary mb-2 w-100">Tickets</button>
+        <a href="http://38.50.50.166/tickets-app/" class="btn btn-outline-primary mb-2 w-100">Tickets</a>
         <button class="btn btn-outline-primary mb-2 w-100">Interconexión</button>
       </nav>
       
@@ -29,8 +29,6 @@
     </div>
   </div>
   <News />
-
-
 </template>
 
 <script setup>
