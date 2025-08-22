@@ -44,8 +44,15 @@
 
 <style>
 footer {
-  background-color: #023773; /* azul oscuro externo */
+  background-color: #023773;
   color: white;
+  margin-left: 220px; /* Deja espacio para el sidebar */
+}
+
+@media (max-width: 991px) {
+  footer {
+    margin-left: 0;
+  }
 }
 
 footer .inner-container {
