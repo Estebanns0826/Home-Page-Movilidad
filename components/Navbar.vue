@@ -7,7 +7,7 @@
 
       <div class="text-center flex-grow-1">
         <span class="titulo-principal text-white">
-          Subsecretaría de Movilidad Sostenible y Seguridad Vial
+          Secretaría de Movilidad Sostenible y Seguridad Vial
         </span>
       </div>
 
