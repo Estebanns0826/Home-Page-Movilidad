@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informe estadístico semaforización</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Pantalla de carga */
+    #loader {
+      position: fixed;
+      z-index: 9999;
+      background: #000;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 1rem;
+      transition: opacity 0.5s ease, visibility 0.5s;
+    }
+
+    .semaforo {
+      width: 60px;
+      height: 180px;
+      background: #222;
+      border-radius: 20px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    }
+
+    .luz {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #444;
+      box-shadow: inset 0 0 10px #000;
+      opacity: 0.2;
+      transition: all 0.3s ease;
+    }
+
+    .rojo.active {
+      background: red;
+      opacity: 1;
+    }
+
+    .amarillo.active {
+      background: yellow;
+      opacity: 1;
+    }
+
+    .verde.active {
+      background: limegreen;
+      opacity: 1;
+    }
+
+    /* Ocultar contenido al cargar */
+    #main-content {
+      display: none;
+    }
+
+    /* Resto del estilo (navbar, fondo, login, etc) */
+    body {
+      background: url("static/login_images/LOGIN_BACKGROUND.jpg") no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 0;
+      padding: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 0;
+    }
+
+    .navbar-custom {
+      background: linear-gradient(90deg, #00264d, #004080);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      color: #ffffff !important;
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .navbar-brand img {
+      height: 45px;
+      margin-right: 0.5rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-title {
+      font-size: 1.3rem;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .navbar-text {
+      color: #ffffff !important;
+      font-size: 1rem;
+    }
+
+    #datetime {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.3rem 0.6rem;
+      border-radius: 12px;
+    }
+
+    .login-card {
+      width: 90%;
+      max-width: 450px;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      z-index: 1;
+      position: relative;
+      margin: 2rem auto;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-container img {
+      max-height: 90px;
+      width: auto;
+      object-fit: contain;
+      transition: transform 2s ease-in-out;
+      transform-style: preserve-3d;
+    }
+
+    .logo-container img:hover {
+      transform: rotateY(360deg);
+    }
+
+    footer {
+      z-index: 1;
+      position: relative;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .navbar-title { font-size: 1.1rem; }
+      .logo-container img { max-height: 75px; }
+      #datetime { font-size: 0.8rem; }
+    }
+
+    @media (max-width: 576px) {
+      .logo-container img { max-height: 65px; }
+      .navbar-title { font-size: 1rem; }
+      footer { font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Pantalla de carga -->
+<div id="loader">
+  <div class="semaforo">
+    <div class="luz rojo" id="rojo"></div>
+    <div class="luz amarillo" id="amarillo"></div>
+    <div class="luz verde" id="verde"></div>
+  </div>
+  <div style="color:white; font-weight:bold;">Cargando informe...</div>
+</div>
+
+<!-- Contenido principal -->
+<div id="main-content">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid d-flex align-items-center">
+      <a class="navbar-brand" href="#">
+        <img src="static/login_images/MOVILAB_3.0.png" alt="Logo Movilab">
+      </a>
+      <div class="navbar-title flex-grow-1">Informe estadístico semaforización</div>
+      <span class="navbar-text d-none d-md-inline" id="datetime"></span>
+    </div>
+  </nav>
+
+  <div class="login-card">
+    <div class="logo-container">
+      <img src="static/login_images/MOVILAB_3.0.png" alt="Logo Movilab">
+      <img src="static/login_images/movilidad_logo.jpg" alt="Logo Movilidad">
+      <img src="static/login_images/itssbck.png" alt="Logo ITSSBCK">
+    </div>
+
+    <h3 class="text-center mb-4">Iniciar Sesión</h3>
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+      <div class="mb-3">
+        <label for="usuario" class="form-label">Usuario</label>
+        <input type="text" class="form-control" name="usuario" id="usuario" required>
+      </div>
+      <div class="mb-3">
+        <label for="clave" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" name="clave" id="clave" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+  </div>
+
+  <footer>
+    <div class="container-fluid">
+      <span class="d-block mb-1">© 2025 Esteban Ramos Gomez</span>
+      <a href="https://www.linkedin.com/in/estebanns350/" target="_blank" style="color: #d4d4d4; text-decoration: underline;">
+        LinkedIn
+      </a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Fecha y hora en navbar
+  function updateDateTime() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = now.toLocaleDateString('es-ES', options);
+    const timeString = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    document.getElementById('datetime').innerText = `${dateString} | ${timeString}`;
+  }
+
+  // Animación semáforo y ocultar loader
+  document.addEventListener('DOMContentLoaded', function () {
+    const rojo = document.getElementById('rojo');
+    const amarillo = document.getElementById('amarillo');
+    const verde = document.getElementById('verde');
+
+    setTimeout(() => rojo.classList.add('active'), 200);
+    setTimeout(() => {
+      rojo.classList.remove('active');
+      amarillo.classList.add('active');
+    }, 600);
+    setTimeout(() => {
+      amarillo.classList.remove('active');
+      verde.classList.add('active');
+    }, 1000);
+    setTimeout(() => {
+      document.getElementById('loader').style.opacity = '0';
+      document.getElementById('loader').style.visibility = 'hidden';
+      document.getElementById('main-content').style.display = 'block';
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>
+
