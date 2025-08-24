@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Contenido principal -->
     <div v-if="!loading">
       <Navbar />
       <transition name="fade-scale">
@@ -9,11 +8,9 @@
       <Footer />
     </div>
 
-    <!-- Pantalla de carga con transición -->
     <transition name="fade">
       <div v-if="loading" class="loading-overlay">
         <div class="loading-container">
-          <!-- Logo arriba del semáforo -->
           <img 
             src="/imagenes/logo_gov_co (1).png" 
             alt="Logo Gobierno" 
@@ -41,21 +38,31 @@ const yellowActive = ref(false);
 const greenActive = ref(false);
 
 const cycleLights = () => {
+  const lightDuration = 200; // Duración en milisegundos para cada luz
+
   setTimeout(() => {
     redActive.value = false;
     yellowActive.value = true;
     setTimeout(() => {
       yellowActive.value = false;
       greenActive.value = true;
-    }, 100);
-  }, 100);
+      setTimeout(() => {
+        // Al final del ciclo, si loading sigue activo, reiniciar
+        if (loading.value) {
+          greenActive.value = false;
+          redActive.value = true;
+          cycleLights();
+        }
+      }, lightDuration);
+    }, lightDuration);
+  }, lightDuration);
 };
 
 onMounted(() => {
   cycleLights();
   setTimeout(() => {
     loading.value = false;
-  }, 400);
+  }, 1000); // Duración total de la pantalla de carga
 });
 </script>
 
@@ -79,50 +86,59 @@ onMounted(() => {
   align-items: center;
 }
 
-/* Logo más grande */
 .loading-logo {
-  width: 300px; /* tamaño aumentado */
-  margin-bottom: 20px;
+  width: 200px; /* Tamaño más grande */
+  margin-bottom: 30px; /* Mayor espacio inferior */
 }
 
 .traffic-light-container {
   display: flex;
   flex-direction: column;
-  background-color: #000;
-  padding: 12px;
-  border-radius: 12px;
-  border: 2px solid #000;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a; /* Color más oscuro */
+  padding: 12px; /* Relleno más grande */
+  border-radius: 12px; /* Bordes más redondeados */
+  border: 2px solid #333; /* Borde sutil */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .traffic-light-circle {
-  width: 45px;
-  height: 45px;
+  width: 30px; /* Tamaño del círculo más grande */
+  height: 30px; /* Tamaño del círculo más grande */
   border-radius: 50%;
-  margin: 8px;
+  margin: 6px; /* Margen más grande */
   opacity: 0.2;
-  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .traffic-light-circle.active {
   opacity: 1;
-  animation: pulse 0.4s ease-in-out;
+  box-shadow: 0 0 10px var(--light-color), inset 0 0 5px var(--light-color);
+  animation: pulse 0.6s infinite alternate;
+}
+
+.red {
+  background-color: #ff0000;
+  --light-color: #ff0000;
+}
+.yellow {
+  background-color: #ffc107;
+  --light-color: #ffc107;
+}
+.green {
+  background-color: #28a745;
+  --light-color: #28a745;
 }
 
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  100% { transform: scale(1.1); }
 }
-
-.red { background-color: red; }
-.yellow { background-color: yellow; }
-.green { background-color: limegreen; }
 
 .loading-text {
   color: white;
-  margin-top: 20px;
-  font-size: 1.5rem;
+  margin-top: 15px;
+  font-size: 1rem; /* Tamaño de fuente más pequeño */
   font-family: sans-serif;
   font-weight: bold;
 }
