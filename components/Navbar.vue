@@ -38,10 +38,9 @@
       </div>
 
       <nav class="nav-links d-none d-md-flex align-items-center gap-4">
-        <a href="/laboratorio" class="nav-link">Laboratorio</a>
-        <a href="/planeamiento" class="nav-link">Planeamiento</a>
-        <a href="/interconexion" class="nav-link">Interconexión</a>
-        <a href="/semaforos" class="nav-link">Semáforos</a>
+        <a href="/laboratorio" class="nav-link">Geoservicios</a>
+        <a href="/planeamiento" class="nav-link">Metadatos</a>
+
         <div class="search-box d-none d-lg-flex align-items-center">
           <input type="text" placeholder="Buscar..." class="search-input" />
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
