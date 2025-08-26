@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte General</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .category {
+            text-align: left;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reporte General</h1>
+    <table>
+        <tr>
+            <th>Categorías</th>
+            <th>Funcionando</th>
+            <th>Vandalizadas</th>
+            <th>Apagadas</th>
+            <th>Totales</th>
+            <th>%</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td class="category">{{ row[0] }}</td>
+            <td>{{ row[1] if row[1] is not none else 0 }}</td>
+            <td>{{ row[2] if row[2] is not none else 0 }}</td>
+            <td>{{ row[3] if row[3] is not none else 0 }}</td>
+            <td>{{ row[4] if row[4] is not none else 0 }}</td>
+            <td>{{ row[5] if row[5] is not none else 0 }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
