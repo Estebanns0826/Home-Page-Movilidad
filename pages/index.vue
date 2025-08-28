@@ -37,7 +37,7 @@
                   @mouseleave="hideDescription">
             <i class="fa fa-map me-2 text-primary"></i> Planeamiento
           </button>
-          <a href="http://38.50.50.166/tickets-app/" class="sidebar-btn mb-2 w-100" 
+          <a href="https://ticketmovilidadcali.com.co/tickets-app/" class="sidebar-btn mb-2 w-100" 
              @mouseover="showDescription($event, 'Intersecciones Apagadas', 'Gestiona tus tickets')"
              @mouseleave="hideDescription">
             <i class="fa fa-traffic-light me-2 text-primary"></i> Intersecciones Apagadas
@@ -85,9 +85,9 @@
               <div class="card h-100 shadow-lg border-0 hover-shadow transition"
                    @mouseover="showDescription($event, 'Tickets Semáforos', 'Este módulo permite la gestión y seguimiento de fallas en semáforos, incluyendo reportes, asignación de técnicos y solución de problemas.')"
                    @mouseleave="hideDescription">
-                <img src="/imagenes/foto3.jpg" class="card-img-top img-fluid" style="height: 220px; object-fit: cover;" alt="Tickets">
+                <img src="/imagenes/tickets_semaforos.jpg" class="card-img-top img-fluid" style="height: 220px; object-fit: cover;" alt="Tickets">
                 <div class="card-body">
-                  <a href="http://38.50.50.166/tickets" class="stretched-link fw-bold text-decoration-none text-primary">Tickets Semáforos</a>
+                  <a href="https://ticketmovilidadcali.com.co/tickets/" class="stretched-link fw-bold text-decoration-none text-primary">Tickets Semáforos</a>
                 </div>
               </div>
             </div>
