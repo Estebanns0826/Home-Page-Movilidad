@@ -1,5 +1,17 @@
 <template>
-  <div class="main-bg min-vh-100">
+  <div class="main-bg">
+    <!-- Carrusel de fondo -->
+    <div class="background-carousel">
+      <img
+        v-for="(img, i) in carouselImages"
+        :key="img"
+        :src="img"
+        :class="{ active: i === currentCarousel }"
+        class="carousel-img"
+        alt="Fondo carrusel"
+      />
+    </div>
+
     <div v-if="showOverlay" class="overlay-blur"></div>
 
     <transition name="fade">
@@ -23,57 +35,93 @@
     <div v-if="!loading">
       <div class="d-flex flex-column flex-md-row">
         <nav class="sidebar d-none d-md-flex flex-column align-items-center py-4 px-3">
-          <div class="sidebar-header mb-4 w-100 text-center">
-            <h5 class="fw-bold text-primary mb-0">Indicadores</h5>
-          </div>
-          <div class="sidebar-divider mb-3"></div>
-          <a href="http://38.50.50.116:5000/report_lab" class="sidebar-btn mb-2 w-100" 
-             @mouseover="showDescription($event, 'Laboratorio de movilidad', 'Accede al laboratorio de movilidad')"
-             @mouseleave="hideDescription">
-            <i class="fa fa-microchip me-2 text-primary"></i> Laboratorio
-          </a>
-          <button class="sidebar-btn mb-2 w-100" 
+          <h5 class="sidebar-title">Menú</h5>
+          <br>
+          <div class="sidebar-section w-100">
+            <button class="sidebar-header mb-2 w-100 text-center sidebar-btn" @click="toggleSection('semaforizacion')">
+              <h5 class="fw-bold text-primary mb-0">Indicadores</h5>
+              <i :class="['fa', openSection === 'Indicadores' ? 'fa-chevron-up' : 'fa-chevron-down', 'ms-2']"></i>
+            </button>
+            <transition name="slide">
+              <div v-if="openSection === 'semaforizacion'" class="w-100">
+                <div class="sidebar-divider mb-3"></div>
+                <a href="http://38.50.50.116:5000/report_lab" class="sidebar-btn mb-2 w-100"
+                  @mouseover="showDescription($event, 'Laboratorio de movilidad', 'Accede al laboratorio de movilidad')"
+                  @mouseleave="hideDescription">
+                  <i class="fa fa-microchip me-2 text-primary"></i> Laboratorio
+                </a>
+                <a href="http://example.com/planeamiento" class="sidebar-btn mb-2 w-100"
                   @mouseover="showDescription($event, 'Planeamiento estratégico', 'Consulta planeamiento estratégico')"
                   @mouseleave="hideDescription">
-            <i class="fa fa-map me-2 text-primary"></i> Planeamiento
-          </button>
-          <a href="https://ticketmovilidadcali.com.co/tickets-app/" class="sidebar-btn mb-2 w-100" 
-             @mouseover="showDescription($event, 'Intersecciones Apagadas', 'Gestiona tus tickets')"
-             @mouseleave="hideDescription">
-            <i class="fa fa-traffic-light me-2 text-primary"></i> Intersecciones Apagadas
-          </a>
-          <button class="sidebar-btn mb-2 w-100" 
+                  <i class="fa fa-map me-2 text-primary"></i> Planeamiento
+                </a>
+                <a href="https://ticketmovilidadcali.com.co/dashboard_semaf/" class="sidebar-btn mb-2 w-100"
+                  @mouseover="showDescription($event, 'Intersecciones Apagadas', 'Gestiona tus tickets')"
+                  @mouseleave="hideDescription">
+                  <i class="fa fa-traffic-light me-2 text-primary"></i> Intersecciones
+                </a>
+                <button class="sidebar-btn mb-2 w-100"
                   @mouseover="showDescription($event, 'Interconexión de servicios', 'Accede a interconexión de servicios')"
                   @mouseleave="hideDescription">
-            <i class="fa fa-link me-2 text-primary"></i> Interconexión
-          </button>
+                  <i class="fa fa-link me-2 text-primary"></i> Interconexión
+                </button>
+              </div>
+            </transition>
+          </div>
+          
+          <div class="sidebar-section w-100">
+            <button class="sidebar-header mb-2 w-100 text-center sidebar-btn" @click="toggleSection('demarcacion')">
+              <h5 class="fw-bold text-primary mb-0">Demarcacion</h5>
+              <i :class="['fa', openSection === 'Demarcacion' ? 'fa-chevron-up' : 'fa-chevron-down', 'ms-2']"></i>
+            </button>
+            <transition name="slide">
+              <div v-if="openSection === 'demarcacion'" class="w-100">
+                <div class="sidebar-divider mb-3"></div>
+                <a href="#" class="sidebar-btn mb-2 w-100"
+                  @mouseover="showDescription($event, 'Señalización Horizontal', 'Módulo de gestión para señalización de piso.')"
+                  @mouseleave="hideDescription">
+                  <i class="fa fa-road me-2 text-primary"></i> Señalización Horizontal
+                </a>
+                <a href="#" class="sidebar-btn mb-2 w-100"
+                  @mouseover="showDescription($event, 'Señalización Vertical', 'Módulo para la administración de señales de tránsito verticales.')"
+                  @mouseleave="hideDescription">
+                  <i class="fa fa-stop me-2 text-primary"></i> Señalización Vertical
+                </a>
+                <a href="#" class="sidebar-btn mb-2 w-100"
+                  @mouseover="showDescription($event, 'Control de Zonas de Parqueo', 'Plataforma para la gestión de zonas de parqueo y tarifas.')"
+                  @mouseleave="hideDescription">
+                  <i class="fa fa-parking me-2 text-primary"></i> Zonas de Parqueo
+                </a>
+              </div>
+            </transition>
+          </div>
         </nav>
         
         <nav class="top-nav d-md-none bg-white shadow-sm py-2 px-3 mb-3 rounded-3 w-100">
           <div class="d-flex justify-content-around flex-wrap">
             <a href="http://38.50.50.116:5000/report_lab" class="btn btn-outline-primary sidebar-btn"
-               @mouseover="showDescription($event, 'Laboratorio', 'Accede al laboratorio de movilidad')"
-               @mouseleave="hideDescription">
+              @mouseover="showDescription($event, 'Laboratorio', 'Accede al laboratorio de movilidad')"
+              @mouseleave="hideDescription">
               <i class="fa fa-microchip"></i> <span class="d-none d-sm-inline ms-1">Laboratorio</span>
             </a>
-            <button class="btn btn-outline-primary sidebar-btn"
-                    @mouseover="showDescription($event, 'Planeamiento', 'Consulta planeamiento estratégico')"
-                    @mouseleave="hideDescription">
+            <a href="http://example.com/planeamiento" class="btn btn-outline-primary sidebar-btn"
+              @mouseover="showDescription($event, 'Planeamiento', 'Consulta planeamiento estratégico')"
+              @mouseleave="hideDescription">
               <i class="fa fa-map"></i> <span class="d-none d-sm-inline ms-1">Planeamiento</span>
-            </button>
+            </a>
             <a href="http://38.50.50.166/tickets-app/" class="btn btn-outline-primary sidebar-btn"
-               @mouseover="showDescription($event, 'Tickets', 'Gestiona tus tickets')"
-               @mouseleave="hideDescription">
+              @mouseover="showDescription($event, 'Tickets', 'Gestiona tus tickets')"
+              @mouseleave="hideDescription">
               <i class="fa fa-traffic-light"></i> <span class="d-none d-sm-inline ms-1">Tickets</span>
             </a>
             <button class="btn btn-outline-primary sidebar-btn"
-                    @mouseover="showDescription($event, 'Interconexión', 'Accede a interconexión de servicios')"
-                    @mouseleave="hideDescription">
+              @mouseover="showDescription($event, 'Interconexión', 'Accede a interconexión de servicios')"
+              @mouseleave="hideDescription">
               <i class="fa fa-link"></i> <span class="d-none d-sm-inline ms-1">Interconexión</span>
             </button>
             <button class="btn btn-outline-primary sidebar-btn"
-                    @mouseover="showDescription($event, 'Señalización', 'Accede al módulo de señalización')"
-                    @mouseleave="hideDescription">
+              @mouseover="showDescription($event, 'Señalización', 'Accede al módulo de señalización')"
+              @mouseleave="hideDescription">
               <i class="fa fa-road"></i> <span class="d-none d-sm-inline ms-1">Señalización</span>
             </button>
           </div>
@@ -83,9 +131,9 @@
           <div class="row g-4">
             <div class="col-12 col-sm-6 col-lg-4">
               <div class="card h-100 shadow-lg border-0 hover-shadow transition"
-                   @mouseover="showDescription($event, 'Tickets Semáforos', 'Este módulo permite la gestión y seguimiento de fallas en semáforos, incluyendo reportes, asignación de técnicos y solución de problemas.')"
-                   @mouseleave="hideDescription">
-                <img src="/imagenes/tickets_semaforos.jpg" class="card-img-top img-fluid" style="height: 220px; object-fit: cover;" alt="Tickets">
+                  @mouseover="showDescription($event, 'Tickets Semáforos', 'Este módulo permite la gestión y seguimiento de fallas en semáforos, incluyendo reportes, asignación de técnicos y solución de problemas.')"
+                  @mouseleave="hideDescription">
+                <img src="/imagenes/tickets_semaforos.jpg" class="card-img-top img-fluid" alt="Tickets">
                 <div class="card-body">
                   <a href="https://ticketmovilidadcali.com.co/tickets/" class="stretched-link fw-bold text-decoration-none text-primary">Tickets Semáforos</a>
                 </div>
@@ -93,9 +141,9 @@
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
               <div class="card h-100 shadow-lg border-0 hover-shadow transition"
-                   @mouseover="showDescription($event, 'Waze Semaforización', 'Permite la gestión de la semaforización a través de Waze.')"
-                   @mouseleave="hideDescription">
-                <img src="/imagenes/waze.jpg" class="card-img-top img-fluid" style="height: 220px; object-fit: cover;" alt="Waze Semaforizacion">
+                  @mouseover="showDescription($event, 'Waze Semaforización', 'Permite la gestión de la semaforización a través de Waze.')"
+                  @mouseleave="hideDescription">
+                <img src="/imagenes/waze.jpg" class="card-img-top img-fluid" alt="Waze Semaforizacion">
                 <div class="card-body">
                   <a href="https://semaforizacioncali.co/login/login.html" class="stretched-link fw-bold text-decoration-none text-primary">Waze Semaforizacion</a>
                 </div>
@@ -103,9 +151,9 @@
             </div>
             <div class="col-12 col-sm-6 col-lg-4">
               <div class="card h-100 shadow-lg border-0 hover-shadow transition"
-                   @mouseover="showDescription($event, 'Geovisor', 'Visualiza datos geoespaciales sobre la movilidad y otros indicadores geográficos.')"
-                   @mouseleave="hideDescription">
-                <img src="/imagenes/VISOR.jpg" class="card-img-top img-fluid" style="height: 220px; object-fit: contain; background-color: #f4f8ff;" alt="Geovisor">
+                  @mouseover="showDescription($event, 'Geovisor', 'Visualiza datos geoespaciales sobre la movilidad y otros indicadores geográficos.')"
+                  @mouseleave="hideDescription">
+                <img src="/imagenes/VISOR.jpg" class="card-img-top img-fluid" alt="Geovisor">
                 <div class="card-body">
                   <a href="#" class="stretched-link fw-bold text-decoration-none text-primary">Geovisor</a>
                 </div>
@@ -141,6 +189,8 @@ const descriptionTitle = ref('');
 const descriptionText = ref('');
 const descriptionPosition = ref({ top: '0px', left: '0px' });
 
+const openSection = ref<string | null>(null);
+
 const isMobile = () => {
   if (typeof window === 'undefined') {
     return false;
@@ -150,7 +200,7 @@ const isMobile = () => {
 };
 
 const cycleLights = () => {
-  const lightDuration = 200;
+  const lightDuration = 80;
   cycleInterval = setInterval(() => {
     redActive.value = false;
     yellowActive.value = true;
@@ -163,6 +213,10 @@ const cycleLights = () => {
       }, lightDuration);
     }, lightDuration);
   }, lightDuration * 3);
+};
+
+const toggleSection = (sectionName: string) => {
+  openSection.value = openSection.value === sectionName ? null : sectionName;
 };
 
 const showDescription = (event: MouseEvent, title: string, text: string) => {
@@ -217,6 +271,12 @@ onBeforeUnmount(() => {
 .main-bg {
   background: linear-gradient(135deg, #f8fafc 0%, #e3e9f7 100%);
   position: relative;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
 }
 
 .loading-overlay {
@@ -225,7 +285,7 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 123, 255, 0.8);
+  background-color: #0057b8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -308,11 +368,11 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 70px;
   left: 0;
-  width: 230px;
+  width: 260px;
   height: calc(100vh - 70px);
   background: #fff;
-  border-right: 4px solid #2a4fa0;
-  box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+  border-right: 4px solid #365099;
+  box-shadow: 2px 0 16px rgba(44, 62, 80, 0.1);
   z-index: 1001;
   justify-content: flex-start;
   border-top-right-radius: 1.5rem;
@@ -321,26 +381,40 @@ onBeforeUnmount(() => {
   transition: box-shadow 0.2s;
 }
 
+.sidebar-title {
+  color: #555;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.sidebar-section {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
 .sidebar-divider {
-  width: 80%;
-  height: 3px;
-  background: linear-gradient(90deg, #2a4fa0 60%, #e3e9f7 100%);
-  border-radius: 2px;
+  width: 90%;
+  height: 2px;
+  background: linear-gradient(90deg, #365099 60%, #e3e9f7 100%);
+  border-radius: 1px;
   margin: 0 auto 1rem auto;
 }
 
 .sidebar-btn {
-  background: #f4f8ff;
-  color: #2a4fa0;
+  background: #f0f4f9;
+  color: #365099;
   border: none;
-  font-size: 1.07rem;
+  font-size: 1rem;
   font-weight: 500;
   border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 0.6rem;
   text-align: left;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 1px 4px rgba(44, 62, 80, 0.04);
+  box-shadow: 0 2px 6px rgba(44, 62, 80, 0.05);
   display: flex;
   align-items: center;
   position: relative;
@@ -348,15 +422,66 @@ onBeforeUnmount(() => {
 
 .sidebar-btn:hover,
 .sidebar-btn:focus {
-  background: #2a4fa0;
+  background: #365099;
   color: #fff;
-  box-shadow: 2px 4px 12px rgba(44, 62, 80, 0.15);
-  z-index: 1002;
+  box-shadow: 0 4px 15px rgba(44, 62, 80, 0.2);
+  transform: translateY(-2px);
+}
+
+.sidebar-btn i {
+  color: #365099;
+  transition: color 0.2s;
+}
+
+.sidebar-btn:hover i,
+.sidebar-btn:focus i {
+  color: #fff;
+}
+
+.sidebar-header {
+  background: #fff;
+  color: #365099;
+  border: 1px solid #365099;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.sidebar-header:hover {
+  background: #365099;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(44, 62, 80, 0.25);
+  transform: translateY(-3px);
+}
+
+.sidebar-header h5 {
+  margin-bottom: 0;
+  color: inherit;
+}
+
+.sidebar-header i {
+  color: inherit;
+  transition: transform 0.3s ease;
 }
 
 .content-area {
   flex-grow: 1;
   padding: 1.5rem 1rem;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.content-area > .row {
+  margin-bottom: 0 !important;
 }
 
 .top-nav {
@@ -426,14 +551,47 @@ onBeforeUnmount(() => {
   font-weight: bold;
 }
 
+/* Modificaciones para las tarjetas y las imágenes */
+.card {
+  height: 350px; /* Mantener la altura de la tarjeta */
+  width: 100%; /* Permitir que la tarjeta ocupe el 100% del espacio de la columna */
+  max-width: none; /* Eliminar la limitación de ancho para que se ajuste mejor */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img-top {
+  height: 250px; /* Mantener la altura de la imagen */
+  object-fit: cover; /* Asegurar que la imagen cubra el área sin distorsionarse */
+}
+
+.card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 .card:hover {
   z-index: 1002;
   position: relative;
 }
 
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 @media (min-width: 768px) {
   .content-area {
-    margin-left: 230px;
+    margin-left: 260px;
   }
 }
 
